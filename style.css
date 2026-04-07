@@ -1,0 +1,210 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --border: #222230;
+  --accent: #00f5a0;
+  --danger: #ff3c5f;
+  --text: #e8e8f0;
+  --muted: #6b6b80;
+  --fab-size: 60px;
+  --radius: 16px;
+}
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,245,160,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(255,60,95,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* FAB */
+#fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 0 rgba(0,245,160,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1000;
+  color: #0a0a0f;
+}
+
+#fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 24px rgba(0,245,160,0.35);
+}
+
+#fab:active { transform: scale(0.95); }
+
+#fab.scanning {
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 8px rgba(0,245,160,0.08);
+  animation: pulse 1.5s ease infinite;
+}
+
+#fab.error {
+  background: var(--danger);
+  color: #fff;
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,160,0.3); }
+  50%       { box-shadow: 0 0 0 12px rgba(0,245,160,0.0); }
+}
+
+#fab-icon, #spinner {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  transition: opacity 0.2s;
+}
+
+#spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fab-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  position: absolute;
+}
+
+/* Panel */
+.panel {
+  position: fixed;
+  bottom: 108px;
+  right: 32px;
+  width: 320px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  z-index: 999;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  animation: slideUp 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.badge.phishing {
+  background: rgba(255,60,95,0.15);
+  color: var(--danger);
+  border: 1px solid rgba(255,60,95,0.3);
+}
+
+.badge.legitimate {
+  background: rgba(0,245,160,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(0,245,160,0.25);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.close-btn:hover { color: var(--text); }
+
+.verdict {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.verdict.phishing { color: var(--danger); }
+.verdict.legitimate { color: var(--accent); }
+
+.reason {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-family: 'Space Mono', monospace;
+}
+
+.thumb {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  opacity: 0.85;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 108px;
+  right: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  z-index: 998;
+  animation: slideUp 0.25s ease;
+}
+
+/* Helpers */
+.hidden { display: none !important; }
